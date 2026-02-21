@@ -29,6 +29,10 @@ const items = routes.map((route) => {
         {
           key: 'Content-Type',
           value: 'application/json'
+        },
+        {
+          key: 'x-api-key',
+          value: '{{apiKey}}'
         }
       ],
       url: {
@@ -57,6 +61,10 @@ const collection = {
     {
       key: 'baseUrl',
       value: 'http://localhost:3000'
+    },
+    {
+      key: 'apiKey',
+      value: ''
     }
   ],
   item: items
