@@ -30,13 +30,8 @@
         ],
         "url": {
           "raw": "{{baseUrl}}/api/health",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "health"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
         }
       }
     },
@@ -56,14 +51,8 @@
         ],
         "url": {
           "raw": "{{baseUrl}}/apiauth/signup",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "auth",
-            "signup"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "signup"]
         },
         "body": {
           "mode": "raw",

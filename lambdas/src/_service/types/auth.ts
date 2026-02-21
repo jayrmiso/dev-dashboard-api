@@ -1,3 +1,3 @@
 export type AuthenticationResult = {
-    token: string
+  token: string
 }
