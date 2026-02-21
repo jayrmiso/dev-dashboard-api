@@ -10,6 +10,7 @@ export class SupabaseImpl implements Supabase {
   private supabaseClient: SupabaseClient
 
   constructor() {
+    console.log(process.env.SUPABASE_URL)
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!

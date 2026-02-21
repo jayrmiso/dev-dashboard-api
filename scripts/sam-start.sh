@@ -18,7 +18,7 @@ sam local start-api --warm-containers EAGER 2>&1 | while IFS= read -r line; do
   elif echo "$line" | grep -q "Mounting .* at"; then
     echo "$line"
   elif echo "$line" | grep -qE "ERROR|Error|Traceback|Failed"; then
-    echo "$line"
+    printf '\033[0;31m%s\033[0m\n' "$line"
   elif echo "$line" | grep -q "Lambda function '"; then
     CURRENT_LAMBDA=$(echo "$line" | grep -oP "Lambda function '\\K[^']+")
   elif echo "$line" | grep -qP '"\S+ /\S+ HTTP'; then
@@ -26,15 +26,27 @@ sam local start-api --warm-containers EAGER 2>&1 | while IFS= read -r line; do
     path=$(echo "$line" | grep -oP '"\S+ \K/\S+')
     status=$(echo "$line" | grep -oP '" \K\d{3}')
     time=$(date +"%H:%M:%S")
-    echo "[$time] $CURRENT_LAMBDA $method $path $status"
+    if [[ "$status" =~ ^2 ]]; then
+      sc='\033[0;32m'
+    elif [[ "$status" =~ ^4 ]]; then
+      sc='\033[0;33m'
+    else
+      sc='\033[0;31m'
+    fi
+    printf '\033[2m[%s]\033[0m \033[0;35m%s\033[0m \033[0;36m%s\033[0m %s %b%s\033[0m\n' "$time" "$CURRENT_LAMBDA" "$method" "$path" "$sc" "$status"
   elif echo "$line" | grep -qP "^\d{4}-\d{2}-\d{2}T.*INFO"; then
     msg=$(echo "$line" | sed 's/.*INFO\s*//')
     time=$(date +"%H:%M:%S")
-    echo "[$time] $CURRENT_LAMBDA | $msg"
+    printf '\033[2m[%s]\033[0m \033[0;35m%s\033[0m %s\n' "$time" "$CURRENT_LAMBDA" "$msg"
   elif echo "$line" | grep -qP "^\d{4}-\d{2}-\d{2}T.*(ERROR|WARN)"; then
     lvl=$(echo "$line" | grep -oP '(ERROR|WARN)')
     msg=$(echo "$line" | sed 's/.*\(ERROR\|WARN\)\s*//')
     time=$(date +"%H:%M:%S")
-    echo "[$time] $CURRENT_LAMBDA $lvl | $msg"
+    if [ "$lvl" = "ERROR" ]; then
+      lc='\033[0;31m'
+    else
+      lc='\033[0;33m'
+    fi
+    printf '\033[2m[%s]\033[0m \033[0;35m%s\033[0m %b%s\033[0m %s\n' "$time" "$CURRENT_LAMBDA" "$lc" "$lvl" "$msg"
   fi
 done

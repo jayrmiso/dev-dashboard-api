@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -16,6 +17,8 @@ const toResourceName = (str: string): string =>
     .split(/[-/]/)
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join('')
+
+const envVarNames = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'DATABASE_URL']
 
 const resources = routes
   .map((route) => {
@@ -42,6 +45,8 @@ const resources = routes
   })
   .join('\n\n')
 
+const globalEnvBlock = envVarNames.map((v) => `        ${v}: '${process.env[v] || ''}'`).join('\n')
+
 const template = `AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Auto-generated local dev template
@@ -51,6 +56,9 @@ Globals:
     Runtime: nodejs20.x
     MemorySize: 128
     Timeout: 10
+    Environment:
+      Variables:
+${globalEnvBlock}
 
 Resources:
 ${resources}

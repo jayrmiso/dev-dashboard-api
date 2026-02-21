@@ -7,6 +7,7 @@ cdk.out
 
 # Environment variables
 .env
+env.json
 
 # Lambda build output
 lambdas/dist
