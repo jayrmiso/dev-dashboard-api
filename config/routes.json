@@ -1,1 +1,4 @@
-[{ "lambda": "health", "path": "/health", "method": "GET" }]
+[
+    { "lambda": "health", "path": "/health", "method": "GET" },
+    { "lambda": "auth/signup", "path": "/auth/signup", "method": "POST" }
+]

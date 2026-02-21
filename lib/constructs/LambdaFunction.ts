@@ -6,11 +6,17 @@ import { Construct } from 'constructs'
 import * as path from 'path'
 
 export class LambdaFunction extends NodejsFunction {
-  constructor(scope: Construct, id: string, envVars: { [key: string]: string }, lambdaRole?: Role) {
+  constructor(
+    scope: Construct,
+    id: string,
+    lambdaPath: string,
+    envVars: { [key: string]: string },
+    lambdaRole?: Role
+  ) {
     super(scope, id, {
       runtime: Runtime.NODEJS_20_X,
       handler: 'handler',
-      entry: path.resolve(__dirname, `../../lambdas/src/${id}/handler.ts`),
+      entry: path.resolve(__dirname, `../../lambdas/src/${lambdaPath}/handler.ts`),
       environment: envVars,
       role: lambdaRole,
       memorySize: 128,

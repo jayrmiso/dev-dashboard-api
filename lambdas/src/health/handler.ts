@@ -8,6 +8,6 @@ export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayP
   try {
     return setResponse(200, healthService.check())
   } catch (error) {
-    return setErrorResponse(error, 'health.handler')
+    return setErrorResponse(error, 'health')
   }
 }

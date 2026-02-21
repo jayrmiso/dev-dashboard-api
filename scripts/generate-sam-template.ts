@@ -11,11 +11,15 @@ const routes: Route[] = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '../config/routes.json'), 'utf-8')
 )
 
-const toPascalCase = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1)
+const toResourceName = (str: string): string =>
+  str
+    .split(/[-/]/)
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join('')
 
 const resources = routes
   .map((route) => {
-    const resourceName = toPascalCase(route.lambda)
+    const resourceName = toResourceName(route.lambda)
     return `  ${resourceName}:
     Type: AWS::Serverless::Function
     Properties:
