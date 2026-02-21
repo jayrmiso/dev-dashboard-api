@@ -2,7 +2,7 @@
   "name": "dev-dashboard-api",
   "version": "0.1.0",
   "bin": {
-    "dev-dashboard-api": "bin/App.js"
+    "dev-dashboard-api": "dist/bin/App.js"
   },
   "scripts": {
     "build": "tsc",
@@ -16,6 +16,8 @@
     "cdk": "cdk",
     "generate:sam": "npx ts-node scripts/generate-sam-template.ts",
     "generate:postman": "npx ts-node scripts/generate-postman-collection.ts",
+    "deploy": "npx cdk deploy --all --require-approval never",
+    "destroy": "npx cdk destroy --all --force",
     "dev": "bash scripts/dev.sh",
     "prepare": "husky"
   },
