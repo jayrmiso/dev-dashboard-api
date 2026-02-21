@@ -6,14 +6,7 @@ import globals from 'globals'
 
 export default [
   {
-    ignores: [
-      'node_modules/**',
-      'cdk.out/**',
-      '.aws-sam/**',
-      'outputs/**',
-      '**/*.js',
-      '**/*.d.ts'
-    ]
+    ignores: ['node_modules/**', 'cdk.out/**', '.aws-sam/**', 'outputs/**', '**/*.js', '**/*.d.ts']
   },
   js.configs.recommended,
   {

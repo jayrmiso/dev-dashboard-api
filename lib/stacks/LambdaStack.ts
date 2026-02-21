@@ -17,7 +17,8 @@ export class LambdaStack extends cdk.Stack {
     const { envVars } = props
 
     for (const route of routes) {
-      const fn = new LambdaFunction(this, route.lambda, envVars)
+      const sanitizedId = route.lambda.replace(/\//g, '-')
+      const fn = new LambdaFunction(this, sanitizedId, route.lambda, envVars)
       this.integrations[route.lambda] = new LambdaIntegration(fn)
     }
   }

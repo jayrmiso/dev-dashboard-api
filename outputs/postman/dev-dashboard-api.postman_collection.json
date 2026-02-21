@@ -7,6 +7,10 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:3000"
+    },
+    {
+      "key": "apiKey",
+      "value": ""
     }
   ],
   "item": [
@@ -18,12 +22,46 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
           }
         ],
         "url": {
           "raw": "{{baseUrl}}/api/health",
           "host": ["{{baseUrl}}"],
           "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "POST Auth Signup",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/apiauth/signup",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "signup"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         }
       }
     }

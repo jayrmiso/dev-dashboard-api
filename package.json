@@ -25,10 +25,12 @@
     "@types/aws-lambda": "^8.10.145",
     "@types/jest": "^30",
     "@types/node": "^24.10.1",
+    "@types/pg": "^8.16.0",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "aws-cdk": "2.1106.1",
     "concurrently": "^9.2.1",
+    "drizzle-kit": "^0.31.9",
     "esbuild": "^0.27.3",
     "eslint": "^9",
     "eslint-config-prettier": "^10",
@@ -40,11 +42,16 @@
     "prettier": "^3",
     "ts-jest": "^29",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "wait-on": "^9.0.4"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.97.0",
     "aws-cdk-lib": "^2.238.0",
-    "constructs": "^10.0.0"
+    "constructs": "^10.0.0",
+    "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.1",
+    "pg": "^8.18.0"
   }
 }
