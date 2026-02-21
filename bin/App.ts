@@ -5,7 +5,11 @@ import { ApiStack } from '../lib/stacks/ApiStack'
 
 const app = new cdk.App()
 
-const envVars: { [key: string]: string } = {}
+const envVars: { [key: string]: string } = {
+  SUPABASE_URL: process.env.SUPABASE_URL || '',
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+  DATABASE_URL: process.env.DATABASE_URL || ''
+}
 
 const lambdaStack = new LambdaStack(app, 'DevDashboardLambdaStack', {
   envVars,
