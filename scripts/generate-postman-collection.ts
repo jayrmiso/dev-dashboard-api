@@ -62,6 +62,9 @@ const collection = {
   item: items
 }
 
-const outPath = path.resolve(__dirname, '../outputs/postman/dev-dashboard-api.postman_collection.json')
+const outPath = path.resolve(
+  __dirname,
+  '../outputs/postman/dev-dashboard-api.postman_collection.json'
+)
 fs.writeFileSync(outPath, JSON.stringify(collection, null, 2))
 console.log(`Generated ${outPath} with ${routes.length} route(s)`)

@@ -20,3 +20,6 @@ template.local.yaml
 
 # Claude
 .claude/
+
+# Keys
+keys

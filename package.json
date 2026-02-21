@@ -9,14 +9,15 @@
     "watch": "tsc -w",
     "test": "jest",
     "test:unit": "jest --config jest.unit.config.ts",
-    "lint": "eslint '**/*.{ts,js}'",
-    "lint:fix": "eslint '**/*.{ts,js}' --fix",
+    "lint": "eslint '**/*.ts'",
+    "lint:fix": "eslint '**/*.ts' --fix",
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "cdk": "cdk",
     "generate:sam": "npx ts-node scripts/generate-sam-template.ts",
     "generate:postman": "npx ts-node scripts/generate-postman-collection.ts",
-    "dev": "bash scripts/dev.sh"
+    "dev": "bash scripts/dev.sh",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.145",
@@ -31,6 +32,7 @@
     "eslint-config-prettier": "^10",
     "eslint-plugin-import": "^2",
     "eslint-plugin-prettier": "^5",
+    "husky": "^9.1.7",
     "jest": "^30",
     "nodemon": "^3.1.14",
     "prettier": "^3",
