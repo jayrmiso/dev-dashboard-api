@@ -1,3 +1,1 @@
-[
-  { "lambda": "health", "path": "/health", "method": "GET" }
-]
+[{ "lambda": "health", "path": "/health", "method": "GET" }]

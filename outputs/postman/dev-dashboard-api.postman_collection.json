@@ -22,13 +22,8 @@
         ],
         "url": {
           "raw": "{{baseUrl}}/api/health",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "health"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
         }
       }
     }

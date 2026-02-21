@@ -4,6 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["es2022"],
+    "outDir": "dist",
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
@@ -25,5 +26,5 @@
     "types": ["node", "jest"],
     "typeRoots": ["./node_modules/@types"]
   },
-  "exclude": ["node_modules", "cdk.out", "lambdas"]
+  "exclude": ["node_modules", "cdk.out", "dist", "lambdas"]
 }

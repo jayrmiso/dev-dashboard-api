@@ -22,3 +22,4 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.CDK_DEFAULT_REGION }}
           CDK_DEFAULT_ACCOUNT: ${{ secrets.CDK_DEFAULT_ACCOUNT }}
           CDK_DEFAULT_REGION: ${{ secrets.CDK_DEFAULT_REGION }}
+          ALLOWED_IPS: ${{ secrets.ALLOWED_IPS }}
