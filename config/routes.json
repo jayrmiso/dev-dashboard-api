@@ -1,0 +1,3 @@
+[
+  { "lambda": "health", "path": "/health", "method": "GET" }
+]

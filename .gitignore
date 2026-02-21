@@ -1,0 +1,22 @@
+*.js
+!jest.config.js
+!jest.unit.config.ts
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# Environment variables
+.env
+
+# Lambda build output
+lambdas/dist
+
+# SAM local dev
+.aws-sam
+template.local.yaml
+
+# Claude
+.claude/
