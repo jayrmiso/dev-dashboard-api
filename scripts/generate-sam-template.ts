@@ -6,6 +6,7 @@ type Route = {
   lambda: string
   path: string
   method: string
+  auth: boolean
 }
 
 const routes: Route[] = JSON.parse(
@@ -20,9 +21,16 @@ const toResourceName = (str: string): string =>
 
 const envVarNames = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'DATABASE_URL']
 
+const hasAuthRoutes = routes.some((r) => r.auth)
+
 const resources = routes
   .map((route) => {
     const resourceName = toResourceName(route.lambda)
+    const authBlock = route.auth
+      ? `
+            Auth:
+              Authorizer: SupabaseAuthorizer`
+      : ''
     return `  ${resourceName}:
     Type: AWS::Serverless::Function
     Properties:
@@ -34,7 +42,7 @@ const resources = routes
           Type: Api
           Properties:
             Path: /api${route.path}
-            Method: ${route.method}
+            Method: ${route.method}${authBlock}
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -44,6 +52,55 @@ const resources = routes
           - handler.ts`
   })
   .join('\n\n')
+
+const authorizerResource = hasAuthRoutes
+  ? `
+  SupabaseAuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: authorizer
+      Handler: handler.handler
+      CodeUri: lambdas/src/auth/authorizer/
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2022
+        EntryPoints:
+          - handler.ts
+
+  UnauthorizedResponse:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      RestApiId: !Ref ServerlessRestApi
+      ResponseType: UNAUTHORIZED
+      StatusCode: '401'
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+      ResponseTemplates:
+        application/json: '{"success":false,"error":{"code":"UNAUTHORIZED","message":"$context.authorizer.error"},"meta":{"requestId":"$context.requestId","timestamp":"$context.requestTime"}}'
+
+  AccessDeniedResponse:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      RestApiId: !Ref ServerlessRestApi
+      ResponseType: ACCESS_DENIED
+      StatusCode: '403'
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+      ResponseTemplates:
+        application/json: '{"success":false,"error":{"code":"ACCESS_DENIED","message":"Access denied"},"meta":{"requestId":"$context.requestId","timestamp":"$context.requestTime"}}'`
+  : ''
+
+const authSection = hasAuthRoutes
+  ? `
+  Api:
+    Auth:
+      DefaultAuthorizer: NONE
+      Authorizers:
+        SupabaseAuthorizer:
+          FunctionArn: !GetAtt SupabaseAuthorizerFunction.Arn`
+  : ''
 
 const globalEnvBlock = envVarNames.map((v) => `        ${v}: '${process.env[v] || ''}'`).join('\n')
 
@@ -58,10 +115,11 @@ Globals:
     Timeout: 10
     Environment:
       Variables:
-${globalEnvBlock}
+${globalEnvBlock}${authSection}
 
 Resources:
 ${resources}
+${authorizerResource}
 `
 
 const outPath = path.resolve(__dirname, '../template.local.yaml')

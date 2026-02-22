@@ -10,7 +10,7 @@ export interface LambdaStackProps extends cdk.StackProps {
 
 export class LambdaStack extends cdk.Stack {
   public readonly integrations: Record<string, LambdaIntegration> = {}
-
+  public readonly authorizerFn: LambdaFunction
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props)
 
@@ -21,5 +21,7 @@ export class LambdaStack extends cdk.Stack {
       const fn = new LambdaFunction(this, sanitizedId, route.lambda, envVars)
       this.integrations[route.lambda] = new LambdaIntegration(fn)
     }
+
+    this.authorizerFn = new LambdaFunction(this, 'authorizer', 'auth/authorizer', envVars)
   }
 }

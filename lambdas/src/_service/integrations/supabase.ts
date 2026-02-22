@@ -1,21 +1,28 @@
 import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js'
 import { AuthenticatedUser } from '../types/auth'
 import { ApiError } from '../../errors'
+import { createRemoteJWKSet, jwtVerify } from 'jose'
 
 export interface Supabase {
   login(email: string, password: string): Promise<AuthenticatedUser>
   signup(email: string, password: string): Promise<AuthResponse>
   signupAsAdmin(email: string, password: string): Promise<UserResponse>
+  verifyToken(token: string): Promise<any>
 }
 
 export class SupabaseImpl implements Supabase {
   private supabaseClient: SupabaseClient
-
+  private PROJECT_JWKS: ReturnType<typeof createRemoteJWKSet>
+  private supabaseUrl: string
+  private supabaseServiceRoleKey: string
   constructor() {
-    console.log(process.env.SUPABASE_URL)
-    this.supabaseClient = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    this.supabaseUrl = process.env.SUPABASE_URL!
+    this.supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+    this.supabaseClient = createClient(this.supabaseUrl, this.supabaseServiceRoleKey)
+
+    this.PROJECT_JWKS = createRemoteJWKSet(
+      new URL(`${this.supabaseUrl}/auth/v1/.well-known/jwks.json`)
     )
   }
 
@@ -63,5 +70,9 @@ export class SupabaseImpl implements Supabase {
       throw new ApiError(message)
     }
     return result
+  }
+
+  async verifyToken(token: string) {
+    return jwtVerify(token, this.PROJECT_JWKS)
   }
 }

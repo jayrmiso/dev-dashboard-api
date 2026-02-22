@@ -2,6 +2,8 @@ import { ZodError } from 'zod'
 import { ApiError } from '../errors/ApiError'
 import { CORS_HEADERS } from '../common/constants'
 import { ApiRequest, ApiResponse } from '../api/common'
+import { AuthorizationError } from '../errors'
+import { AuthError } from '@supabase/supabase-js'
 
 interface ApiMeta {
   requestId: string
@@ -76,6 +78,19 @@ export function setErrorResponse(
       meta
     }
     return { statusCode: error.statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) }
+  }
+
+  if (error instanceof AuthError) {
+    const body: ErrorResponse = {
+      success: false,
+      error: {
+        code: 'AUTHORIZATION_ERROR',
+        message: error.message
+      },
+      meta
+    }
+
+    return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify(body) }
   }
 
   const body: ErrorResponse = {

@@ -18,5 +18,6 @@ const lambdaStack = new LambdaStack(app, 'DevDashboardLambdaStack', {
 
 new ApiStack(app, 'DevDashboardApiStack', {
   integrations: lambdaStack.integrations,
+  authorizerFn: lambdaStack.authorizerFn,
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION }
 })
