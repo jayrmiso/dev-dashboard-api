@@ -44,7 +44,11 @@ export function setResponse<T>(statusCode: number, data: T, event?: ApiRequest):
   }
 }
 
-export function setErrorResponse(error: Error | unknown, source: string, event?: ApiRequest): ApiResponse {
+export function setErrorResponse(
+  error: Error | unknown,
+  source: string,
+  event?: ApiRequest
+): ApiResponse {
   console.error(`[${source}]`, error)
 
   const meta = buildMeta(event?.requestContext?.requestId)

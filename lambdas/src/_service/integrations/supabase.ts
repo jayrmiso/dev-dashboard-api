@@ -1,5 +1,5 @@
 import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js'
-import { AuthenticatedUser, AuthenticationResult } from '../types/auth'
+import { AuthenticatedUser } from '../types/auth'
 import { ApiError } from '../../errors'
 
 export interface Supabase {
@@ -26,7 +26,7 @@ export class SupabaseImpl implements Supabase {
     })
 
     if (error && error.code) {
-      const message = (error).code
+      const message = error.code
       throw new ApiError(message)
     }
     return {
@@ -45,8 +45,8 @@ export class SupabaseImpl implements Supabase {
     })
 
     if (result.error && result.error.code) {
-        const message = (result.error).code
-        throw new ApiError(message)
+      const message = result.error.code
+      throw new ApiError(message)
     }
     return result
   }
@@ -59,7 +59,7 @@ export class SupabaseImpl implements Supabase {
     })
 
     if (result.error && result.error.code) {
-      const message = (result.error).code
+      const message = result.error.code
       throw new ApiError(message)
     }
     return result

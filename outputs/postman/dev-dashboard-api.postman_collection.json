@@ -30,13 +30,8 @@
         ],
         "url": {
           "raw": "{{baseUrl}}/api/health",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "health"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
         }
       }
     },
@@ -56,14 +51,8 @@
         ],
         "url": {
           "raw": "{{baseUrl}}/api/auth/signup",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "auth",
-            "signup"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "signup"]
         },
         "body": {
           "mode": "raw",
@@ -92,14 +81,8 @@
         ],
         "url": {
           "raw": "{{baseUrl}}/api/auth/login",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "auth",
-            "login"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
         },
         "body": {
           "mode": "raw",

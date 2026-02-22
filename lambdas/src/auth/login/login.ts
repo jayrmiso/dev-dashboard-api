@@ -12,7 +12,7 @@ const loginPayload = z.object({
 export const login = async (event: ApiRequest, supabase: Supabase): Promise<ApiResponse> => {
   try {
     const payload = validatePayload(event, loginPayload)
-    
+
     const result = await supabase.login(payload.email, payload.password)
 
     return setResponse(201, result, event)
