@@ -50,9 +50,39 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/apiauth/signup",
+          "raw": "{{baseUrl}}/api/auth/signup",
           "host": ["{{baseUrl}}"],
           "path": ["api", "auth", "signup"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "POST Auth Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
         },
         "body": {
           "mode": "raw",

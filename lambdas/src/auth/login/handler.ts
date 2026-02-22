@@ -1,8 +1,10 @@
-import { ApiRequest, ApiResponse } from '../../api/common'
 import { SupabaseImpl } from '../../_service/integrations/supabase'
-import { signup } from './signup'
+import { ApiRequest, ApiResponse } from '../../api/common'
+import { login } from './login'
 
 export const handler = async (event: ApiRequest): Promise<ApiResponse> => {
   const supabase = new SupabaseImpl()
-  return signup(event, supabase)
+  const result = await login(event, supabase)
+
+  return result
 }
