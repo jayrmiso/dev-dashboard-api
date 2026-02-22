@@ -94,6 +94,36 @@
           }
         }
       }
+    },
+    {
+      "name": "POST Auth Authorizer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/authorizer",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "authorizer"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
     }
   ]
 }

@@ -1,5 +1,5 @@
 [
-  { "lambda": "health", "path": "/health", "method": "GET" },
-  { "lambda": "auth/signup", "path": "/auth/signup", "method": "POST" },
-  { "lambda": "auth/login", "path": "/auth/login", "method": "POST" }
+  { "lambda": "health", "path": "/health", "method": "GET", "auth": true },
+  { "lambda": "auth/signup", "path": "/auth/signup", "method": "POST", "auth": false },
+  { "lambda": "auth/login", "path": "/auth/login", "method": "POST", "auth": false }
 ]

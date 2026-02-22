@@ -36,6 +36,7 @@
     "eslint-config-prettier": "^10",
     "eslint-plugin-import": "^2",
     "eslint-plugin-prettier": "^5",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "husky": "^9.1.7",
     "jest": "^30",
     "nodemon": "^3.1.14",
@@ -52,6 +53,7 @@
     "constructs": "^10.0.0",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
+    "jose": "^4.15.9",
     "pg": "^8.18.0",
     "zod": "^4.3.6"
   }

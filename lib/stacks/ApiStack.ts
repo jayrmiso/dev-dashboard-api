@@ -7,16 +7,21 @@ import {
   ApiKey,
   UsagePlan,
   ApiKeySourceType,
-  Period
+  Period,
+  TokenAuthorizer,
+  GatewayResponse,
+  ResponseType
 } from 'aws-cdk-lib/aws-apigateway'
 import * as iam from 'aws-cdk-lib/aws-iam'
 import { Construct } from 'constructs'
 import routes from '../../config/routes.json'
+import { LambdaFunction } from '../constructs/LambdaFunction'
 
 const ALLOWED_IPS = (process.env.ALLOWED_IPS || '').split(',').filter(Boolean)
 
 export interface ApiStackProps extends cdk.StackProps {
   integrations: Record<string, LambdaIntegration>
+  envVars: { [key: string]: string }
 }
 
 export class ApiStack extends cdk.Stack {
@@ -24,6 +29,13 @@ export class ApiStack extends cdk.Stack {
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props)
+
+    const authorizerFn = new LambdaFunction(this, 'authorizer', 'auth/authorizer', props.envVars)
+
+    const auth = new TokenAuthorizer(this, 'SupabaseAuthorizer', {
+      handler: authorizerFn,
+      identitySource: 'method.request.header.Authorization'
+    })
 
     this.api = new RestApi(this, 'DevDashboardApi', {
       restApiName: 'Dev Dashboard API',
@@ -90,6 +102,32 @@ export class ApiStack extends cdk.Stack {
     privateUsagePlan.addApiStage({ stage: this.api.deploymentStage })
     privateUsagePlan.addApiKey(privateApiKey)
 
+    new GatewayResponse(this, 'UnauthorizedResponse', {
+      restApi: this.api,
+      type: ResponseType.UNAUTHORIZED,
+      statusCode: '401',
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'"
+      },
+      templates: {
+        'application/json':
+          '{"success":false,"error":{"code":"UNAUTHORIZED","message":"$context.authorizer.error"},"meta":{"requestId":"$context.requestId","timestamp":"$context.requestTime"}}'
+      }
+    })
+
+    new GatewayResponse(this, 'AccessDeniedResponse', {
+      restApi: this.api,
+      type: ResponseType.ACCESS_DENIED,
+      statusCode: '403',
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'"
+      },
+      templates: {
+        'application/json':
+          '{"success":false,"error":{"code":"ACCESS_DENIED","message":"Access denied"},"meta":{"requestId":"$context.requestId","timestamp":"$context.requestTime"}}'
+      }
+    })
+
     const api = this.api.root.addResource('api')
 
     for (const route of routes) {
@@ -102,7 +140,8 @@ export class ApiStack extends cdk.Stack {
       }
 
       resource.addMethod(route.method, props.integrations[route.lambda], {
-        apiKeyRequired: true
+        apiKeyRequired: true,
+        ...(route.auth && { authorizer: auth })
       })
     }
 
