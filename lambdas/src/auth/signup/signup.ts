@@ -1,15 +1,31 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import { ApiRequest, ApiResponse } from '../../api/common'
 import { setErrorResponse, setResponse } from '../../utils/response'
-import { SupabaseImpl } from '../../_service/integrations/supabase'
+import { Supabase } from '../../_service/integrations/supabase'
+import z from 'zod'
+import { validatePayload } from '../../utils/validation'
 
-export const signup = async (
-  event: APIGatewayProxyEvent,
-  _supabase: SupabaseImpl
-): Promise<APIGatewayProxyResult> => {
+const signupPayload = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8)
+    .regex(/[A-Z]/, 'Must contain an uppercase letter')
+    .regex(/[^a-zA-Z0-9]/, 'Must contain a special character'),
+  email_confirm: z.boolean().optional()
+})
+
+export const signup = async (event: ApiRequest, supabase: Supabase): Promise<ApiResponse> => {
   try {
-    console.log(event)
-    return setResponse(200, {})
+    const payload = validatePayload(event, signupPayload)
+    let result
+    if (payload.email_confirm)
+      result = await supabase.signupAsAdmin(payload.email, payload.password)
+    else {
+      result = await supabase.signup(payload.email, payload.password)
+    }
+
+    return setResponse(201, result, event)
   } catch (error) {
-    return setErrorResponse(error, 'signup')
+    return setErrorResponse(error, 'signup', event)
   }
 }

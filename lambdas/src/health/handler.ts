@@ -1,13 +1,13 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import { ApiRequest, ApiResponse } from '../api/common'
 import { setResponse, setErrorResponse } from '../utils/response'
 import { HealthService } from './HealthService'
 
 const healthService = new HealthService()
 
-export const handler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const handler = async (event: ApiRequest): Promise<ApiResponse> => {
   try {
-    return setResponse(200, healthService.check())
+    return setResponse(200, healthService.check(), event)
   } catch (error) {
-    return setErrorResponse(error, 'health')
+    return setErrorResponse(error, 'health', event)
   }
 }
