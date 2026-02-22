@@ -12,7 +12,7 @@ fi
 echo "Starting API..."
 CURRENT_LAMBDA=""
 LOG_COLOR=""
-sam local start-api --warm-containers EAGER 2>&1 | while IFS= read -r line; do
+sam local start-api --port 3001 --warm-containers EAGER 2>&1 | while IFS= read -r line; do
   if echo "$line" | grep -q "Running on"; then
     echo "$line"
     echo "Ready."
