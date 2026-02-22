@@ -2,7 +2,6 @@ import { ZodError } from 'zod'
 import { ApiError } from '../errors/ApiError'
 import { CORS_HEADERS } from '../common/constants'
 import { ApiRequest, ApiResponse } from '../api/common'
-import { AuthorizationError } from '../errors'
 import { AuthError } from '@supabase/supabase-js'
 
 interface ApiMeta {

@@ -1,6 +1,7 @@
 import js from '@eslint/js'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
+import unusedImports from 'eslint-plugin-unused-imports'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals'
 
@@ -12,7 +13,8 @@ export default [
   {
     files: ['**/*.{ts,js}'],
     plugins: {
-      '@typescript-eslint': tsPlugin
+      '@typescript-eslint': tsPlugin,
+      'unused-imports': unusedImports
     },
     languageOptions: {
       parser: tsParser,
@@ -23,7 +25,9 @@ export default [
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
-      '@typescript-eslint/no-unused-vars': [
+      '@typescript-eslint/no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
       ],

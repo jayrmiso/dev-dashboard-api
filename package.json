@@ -36,6 +36,7 @@
     "eslint-config-prettier": "^10",
     "eslint-plugin-import": "^2",
     "eslint-plugin-prettier": "^5",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "husky": "^9.1.7",
     "jest": "^30",
     "nodemon": "^3.1.14",

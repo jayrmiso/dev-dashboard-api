@@ -1,4 +1,9 @@
-import { APIGatewayAuthorizerEvent, APIGatewayAuthorizerResult, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import {
+  APIGatewayAuthorizerEvent,
+  APIGatewayAuthorizerResult,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult
+} from 'aws-lambda'
 
 export type ApiRequest = APIGatewayProxyEvent
 export type ApiResponse = APIGatewayProxyResult

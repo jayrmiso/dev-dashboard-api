@@ -1,13 +1,13 @@
 import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js'
 import { AuthenticatedUser } from '../types/auth'
 import { ApiError } from '../../errors'
-import { createRemoteJWKSet, jwtVerify } from 'jose'
+import { createRemoteJWKSet, jwtVerify, JWTVerifyResult } from 'jose'
 
 export interface Supabase {
   login(email: string, password: string): Promise<AuthenticatedUser>
   signup(email: string, password: string): Promise<AuthResponse>
   signupAsAdmin(email: string, password: string): Promise<UserResponse>
-  verifyToken(token: string): Promise<any>
+  verifyToken(token: string): Promise<JWTVerifyResult>
 }
 
 export class SupabaseImpl implements Supabase {
@@ -72,7 +72,7 @@ export class SupabaseImpl implements Supabase {
     return result
   }
 
-  async verifyToken(token: string) {
+  async verifyToken(token: string): Promise<JWTVerifyResult> {
     return jwtVerify(token, this.PROJECT_JWKS)
   }
 }

@@ -66,7 +66,7 @@ export class ApiStack extends cdk.Stack {
             }
           })
         ]
-      }),
+      })
     })
 
     // Public API key — for health, login (low quota)

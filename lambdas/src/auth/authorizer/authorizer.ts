@@ -2,8 +2,12 @@ import { StatementEffect } from 'aws-lambda'
 import { Supabase } from '../../_service/integrations/supabase'
 import { ApiAuthRequest, ApiAuthResponse } from '../../api/common'
 import { retrieveToken } from '../../utils/utils'
+import { ApiError } from '../../errors'
 
-export const authorizer = async (event: ApiAuthRequest, supabase: Supabase): Promise<ApiAuthResponse> => {
+export const authorizer = async (
+  event: ApiAuthRequest,
+  supabase: Supabase
+): Promise<ApiAuthResponse> => {
   const token = retrieveToken(event)
 
   try {
@@ -13,10 +17,9 @@ export const authorizer = async (event: ApiAuthRequest, supabase: Supabase): Pro
       userId: payload.sub as string,
       email: payload.email as string
     })
-  } catch (error: any) {
-    console.error('[authorizer]', error)
-
-    const message = error?.code === 'ERR_JWT_EXPIRED' ? 'Token expired' : 'Unauthorized'
+  } catch (error) {
+    const message =
+      (error as ApiError).code === 'ERR_JWT_EXPIRED' ? 'Token expired' : 'Unauthorized'
 
     return generatePolicy('unauthorized', 'Deny', event.methodArn, {
       error: message
