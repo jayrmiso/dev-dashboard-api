@@ -14,13 +14,13 @@ npx nodemon \
   --signal SIGTERM \
   --exec "bash scripts/sam-start.sh" &
 
-npx wait-on tcp:3000 -q 2>/dev/null
+npx wait-on tcp:3001 -q 2>/dev/null
 
-ngrok http 3000 --log stdout --log-format logfmt 2>&1 | while read line; do
+ngrok http 3001 --log stdout --log-format logfmt 2>&1 | while read line; do
   if echo "$line" | grep -q "url=https://"; then
     NGROK_URL=$(echo "$line" | grep -oP 'url=\K\S+')
     echo ""
-    echo "Local:  http://127.0.0.1:3000"
+    echo "Local:  http://127.0.0.1:3001"
     echo "Public: $NGROK_URL"
     echo ""
     echo "Ready."
