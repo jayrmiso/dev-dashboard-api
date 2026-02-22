@@ -21,7 +21,7 @@ const ALLOWED_IPS = (process.env.ALLOWED_IPS || '').split(',').filter(Boolean)
 
 export interface ApiStackProps extends cdk.StackProps {
   integrations: Record<string, LambdaIntegration>
-  authorizerFn: LambdaFunction
+  envVars: { [key: string]: string }
 }
 
 export class ApiStack extends cdk.Stack {
@@ -30,8 +30,11 @@ export class ApiStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props)
 
-    const auth = new TokenAuthorizer(this, 'TokenAuthorizer', {
-      handler: props.authorizerFn
+    const authorizerFn = new LambdaFunction(this, 'authorizer', 'auth/authorizer', props.envVars)
+
+    const auth = new TokenAuthorizer(this, 'SupabaseAuthorizer', {
+      handler: authorizerFn,
+      identitySource: 'method.request.header.Authorization'
     })
 
     this.api = new RestApi(this, 'DevDashboardApi', {
